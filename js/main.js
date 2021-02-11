@@ -11,3 +11,5 @@ const getRandomNumber = (min = 0, max = 100) => {
 const checkLengthOfString = (string, maxLength = 140) => {
   return string.length <= maxLength;
 }
+
+throw new Error('Диапазон меньше нуля');
