@@ -72,7 +72,7 @@ const createComment = (array, max) => {
 
 const createCommentArray = () => {
   const comments = [];
-  let count = getRandomNumber(1, MAX_COMMENTS);
+  const count = getRandomNumber(1, MAX_COMMENTS);
 
   for (let i = 1; i <= count; i++) {
     comments.push(createComment(COMMENTS_ID, COMMENTS_ID_MAX));
