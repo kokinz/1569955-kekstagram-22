@@ -64,14 +64,14 @@ const getRandomUniqueArrayNumber = (array = [], max = 10) => {
 const createComment = (array, max) => {
   return {
     id: getRandomUniqueArrayNumber(array, max),
-    avatar: 'img/avatar-' + getRandomNumber(1, MAX_AVATARS) + '.svg',
+    avatar: `img/avatar-${getRandomNumber(1, MAX_AVATARS)}.svg`,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
   }
 }
 
 const createCommentArray = () => {
-  let comments = [];
+  const comments = [];
   let count = getRandomNumber(1, MAX_COMMENTS);
 
   for (let i = 1; i <= count; i++) {
@@ -84,7 +84,7 @@ const createCommentArray = () => {
 const createPhotoDescription = (number) => {
   return {
     id: number,
-    url: 'photos/' + number + '.jpg',
+    url: `photos/${number}.jpg`,
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomNumber(MIN_LIKES, MAX_LIKES),
     comments: createCommentArray(),
@@ -92,7 +92,7 @@ const createPhotoDescription = (number) => {
 };
 
 const createPhotoDescriptionArray = () => {
-  let photos = [];
+  const photos = [];
 
   for (let i = 1; i <= PHOTOS_COUNT; i++) {
     photos.push(createPhotoDescription(i));
