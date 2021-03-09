@@ -7,65 +7,71 @@ const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 
-const openBigPictureModal = () => {
-  bigPicture.classList.remove('hidden');
-  
-  commentsCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
-  
-  pageBody.classList.add('modal-open');
+const onBigPictureEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    closeBigPictureModal(evt);
+  }
 }
 
-bigPictureOpen.addEventListener('click', (evt) => {
-  if (evt.target.className === ('picture__img' || 'picture')) {
-    bigPicture.classList.remove('hidden');
-  
-    commentsCount.classList.add('hidden');
-    commentsLoader.classList.add('hidden');
-  
-    pageBody.classList.add('modal-open');
-  
-    document.addEventListener('keydown', (evt) => {
-      if (isEscEvent(evt)) {
-        evt.preventDefault();
-    
-        bigPicture.classList.add('hidden');
-    
-        commentsCount.classList.remove('hidden');
-        commentsLoader.classList.remove('hidden');
-        pageBody.classList.remove('modal-open');
-      }
-    });
+const onBigPictureEnterKeydown = (evt) => {
+  if (isEnterEvent(evt)) {
+    closeBigPictureModal(evt);
   }
-});
+}
 
-bigPictureOpen.addEventListener('keydown', (evt) => {
+const onBigPictureCloseClick = (evt) => {
+  closeBigPictureModal(evt);
+}
+
+const onPictureOpenClick = (evt) => {
   if (evt.target.className === ('picture__img' || 'picture')) {
-    if (isEnterEvent(evt)) {
-      bigPicture.classList.remove('hidden');
-  
-      commentsCount.classList.add('hidden');
-      commentsLoader.classList.add('hidden');
-  
-      pageBody.classList.add('modal-open');
+    openBigPictureModal(evt);
+  }
+}
+
+const onPictureEnterKeydown = (evt) => {
+  if (isEnterEvent(evt)) {
+    if (evt.target.className === 'picture') {
+      openBigPictureModal(evt);
     }
   }
-});
+}
 
-bigPictureClose.addEventListener('click', () => {
+const closeBigPictureModal = (evt) => {
+  evt.preventDefault();
+
   bigPicture.classList.add('hidden');
-  
+
   commentsCount.classList.remove('hidden');
   commentsLoader.classList.remove('hidden');
-  pageBody.classList.remove('modal-open');
-});
 
-bigPictureClose.addEventListener('keydown', () => {
-  if (isEnterEvent(evt)) {
-    bigPicture.classList.add('hidden');
-  
-    commentsCount.classList.remove('hidden');
-    commentsLoader.classList.remove('hidden');
-    pageBody.classList.remove('modal-open');
-  }
-});
+  pageBody.classList.remove('modal-open');
+
+  document.removeEventListener('keydown', onBigPictureEscKeydown);
+  bigPictureClose.removeEventListener('keydown', onBigPictureEnterKeydown);
+  bigPictureClose.removeEventListener('click', onBigPictureCloseClick);
+
+  bigPictureOpen.addEventListener('click', onPictureOpenClick);
+  bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
+}
+
+const openBigPictureModal = (evt) => {
+  evt.preventDefault();
+
+  bigPicture.classList.remove('hidden');
+
+  commentsCount.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
+
+  pageBody.classList.add('modal-open');
+
+  document.addEventListener('keydown', onBigPictureEscKeydown);
+  bigPictureClose.addEventListener('keydown', onBigPictureEnterKeydown);
+  bigPictureClose.addEventListener('click', onBigPictureCloseClick);
+
+  bigPictureOpen.removeEventListener('click', onPictureOpenClick);
+  bigPictureOpen.removeEventListener('keydown', onPictureEnterKeydown);
+}
+
+bigPictureOpen.addEventListener('click', onPictureOpenClick);
+bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
