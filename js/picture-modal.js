@@ -1,4 +1,5 @@
 import {isEscEvent, isEnterEvent} from './util.js';
+import {gallery, pictures} from './pictures.js';
 
 const pageBody = document.body;
 const bigPicture = document.querySelector('.big-picture');
@@ -6,6 +7,22 @@ const bigPictureOpen = document.querySelector('.pictures');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
+const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
+const bigPictureLikes = bigPicture.querySelector('.likes-count');
+const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
+const bigPictureDescription = bigPicture.querySelector('.social__caption');
+
+let pictureId = 0;
+
+const getElementId = (evt) => {
+  for (let i = 0; i < gallery.length; i++) {
+    if (evt.target.parentNode === gallery[i]) {
+      pictureId = i;
+      console.log(pictureId);
+      return i;
+    }
+  }
+}
 
 const onBigPictureEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -71,7 +88,16 @@ const openBigPictureModal = (evt) => {
 
   bigPictureOpen.removeEventListener('click', onPictureOpenClick);
   bigPictureOpen.removeEventListener('keydown', onPictureEnterKeydown);
+
+  getElementId(evt);
+  renderBigPicture();
 }
 
-bigPictureOpen.addEventListener('click', onPictureOpenClick);
-bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
+const renderBigPicture = () => {
+  const {url, likes, comments, description} = pictures[pictureId];
+
+  console.log(url);
+
+}
+
+export {bigPictureOpen, onPictureOpenClick, onPictureEnterKeydown, renderBigPicture};
