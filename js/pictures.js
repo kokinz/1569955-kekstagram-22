@@ -1,4 +1,4 @@
-import {createPhotoDescriptionArray} from '/js/data.js';
+import {createPhotoDescriptionArray} from './data.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');

@@ -1,5 +1,5 @@
-import {getRandomNumber, getRandomArrayElement, getRandomUniqueArrayNumber} from '/js/util.js';
-import {MAX_AVATARS, MESSAGES, NAMES, MAX_COMMENTS, COMMENTS_ID, COMMENTS_ID_MAX, DESCRIPTIONS, MIN_LIKES, MAX_LIKES, PHOTOS_COUNT} from '/js/settings.js';
+import {getRandomNumber, getRandomArrayElement, getRandomUniqueArrayNumber} from './util.js';
+import {MAX_AVATARS, MESSAGES, NAMES, MAX_COMMENTS, COMMENTS_ID, COMMENTS_ID_MAX, DESCRIPTIONS, MIN_LIKES, MAX_LIKES, PHOTOS_COUNT} from './settings.js';
 
 const createComment = (array, max) => {
   return {
