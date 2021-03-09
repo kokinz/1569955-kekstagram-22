@@ -10,6 +10,7 @@ const commentsLoader = bigPicture.querySelector('.comments-loader');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
 const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
+const bigPictureCommentslist = bigPicture.querySelector('.social__comments');
 const bigPictureDescription = bigPicture.querySelector('.social__caption');
 
 let pictureId = 0;
@@ -18,8 +19,6 @@ const getElementId = (evt) => {
   for (let i = 0; i < gallery.length; i++) {
     if (evt.target.parentNode === gallery[i]) {
       pictureId = i;
-      console.log(pictureId);
-      return i;
     }
   }
 }
@@ -96,8 +95,37 @@ const openBigPictureModal = (evt) => {
 const renderBigPicture = () => {
   const {url, likes, comments, description} = pictures[pictureId];
 
-  console.log(url);
+  bigPictureImg.src = url;
+  bigPictureLikes.textContent = likes;
+  bigPictureCommentsCount.textContent = comments.length;
+  bigPictureDescription.textContent = description;
 
+  bigPictureCommentslist.innerHTML = '';
+  const commentFragment = document.createDocumentFragment();
+
+  for (let i = 0; i < pictures[pictureId].comments.length; i++) {
+    const commentListItem = document.createElement('li');
+    commentListItem.classList.add('social__comment');
+
+    const commentAvatar = document.createElement('img')
+    commentAvatar.classList.add('social__picture');
+
+    const commentText = document.createElement('p')
+    commentText.classList.add('social__text');
+
+    const {avatar, name, message} = pictures[pictureId].comments[i];
+
+    commentAvatar.src = avatar;
+    commentAvatar.alt = name;
+    commentListItem.appendChild(commentAvatar);
+
+    commentText.textContent = message;
+    commentListItem.appendChild(commentText);
+
+    commentFragment.appendChild(commentListItem);
+  }
+
+  bigPictureCommentslist.appendChild(commentFragment);
 }
 
 export {bigPictureOpen, onPictureOpenClick, onPictureEnterKeydown, renderBigPicture};
