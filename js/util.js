@@ -8,6 +8,14 @@ const getRandomNumber = (min = 0, max = 100) => {
   throw new Error('Диапазон меньше нуля');
 }
 
+const isEscEvent = (evt) => {
+  return evt.key === ('Escape' || 'Esc');
+};
+
+const isEnterEvent = (evt) => {
+  return evt.key === 'Enter';
+};
+
 const checkLengthOfString = (string, maxLength = 140) => {
   if (string === undefined) {
     throw new Error('Требуемый параметр строка (string)');
@@ -36,4 +44,4 @@ const getRandomUniqueArrayNumber = (array = [], max = 10) => {
   return array[array.length - 1];
 }
 
-export {getRandomNumber, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};
+export {getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};

@@ -1,7 +1,9 @@
 import {checkLengthOfString} from './util.js';
-import {createPhotoDescriptionArray} from './data.js';
 import {renderPicures} from './pictures.js';
+import {bigPictureOpen, onPictureOpenClick, onPictureEnterKeydown} from './picture-modal.js';
 
-const pictures = createPhotoDescriptionArray();
 checkLengthOfString ('');
-renderPicures(pictures);
+renderPicures();
+
+bigPictureOpen.addEventListener('click', onPictureOpenClick);
+bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
