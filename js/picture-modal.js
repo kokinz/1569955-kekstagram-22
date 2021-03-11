@@ -128,9 +128,9 @@ const renderBigPicture = () => {
   bigPictureCommentslist.appendChild(commentFragment);
 }
 
-const addListeners = () => {
+const addPicturesListeners = () => {
   bigPictureOpen.addEventListener('click', onPictureOpenClick);
   bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
 }
 
-export {addListeners};
+export {addPicturesListeners};

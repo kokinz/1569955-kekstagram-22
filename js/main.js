@@ -1,10 +1,9 @@
-import {checkLengthOfString} from './util.js';
 import {renderPicures} from './pictures.js';
-import {addListeners} from './picture-modal.js';
-import './upload-modal.js';
+import {addPicturesListeners} from './picture-modal.js';
+import {addUploadListeners} from './upload-modal.js';
 
-checkLengthOfString ('');
 renderPicures();
-addListeners();
+addPicturesListeners();
+addUploadListeners();
 
 
