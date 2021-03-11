@@ -17,7 +17,7 @@ let pictureId = 0;
 
 const getElementId = (evt) => {
   for (let i = 0; i < gallery.length; i++) {
-    if (evt.target.parentNode === gallery[i]) {
+    if (evt.target.parentNode === gallery[i] || evt.target === gallery[i]) {
       pictureId = i;
     }
   }
@@ -128,4 +128,9 @@ const renderBigPicture = () => {
   bigPictureCommentslist.appendChild(commentFragment);
 }
 
-export {bigPictureOpen, onPictureOpenClick, onPictureEnterKeydown, renderBigPicture};
+const addListeners = () => {
+  bigPictureOpen.addEventListener('click', onPictureOpenClick);
+  bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
+}
+
+export {addListeners};
