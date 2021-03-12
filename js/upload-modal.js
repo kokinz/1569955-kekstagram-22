@@ -17,6 +17,51 @@ const uploadImgFiltersList = uploadOverlay.querySelector('.effects__list');
 const uploadImgFilterValue = uploadOverlay.querySelector('.effect-level__value');
 const uploadImgFilterSlider = uploadOverlay.querySelector('.effect-level__slider');
 
+const FILTER_SETTINGS = {
+  none: 'none',
+  
+  chrome: {
+    range: {
+      min: 0,
+      max: 1,
+    },
+    start: 1,
+    step: 0.1,
+  },
+  sepia: {
+    range: {
+      min: 0,
+      max: 1,
+    },
+    start: 1,
+    step: 0.1,
+  },
+  marvin: {
+    range: {
+      min: 0,
+      max: 100,
+    },
+    start: 100,
+    step: 1,
+  },
+  phobos: {
+    range: {
+      min: 0,
+      max: 3,
+    },
+    start: 3,
+    step: 0.1,
+  },
+  heat: {
+    range: {
+      min: 1,
+      max: 3,
+    },
+    start: 3,
+    step: 0.1,
+  },
+};
+
 const FILTERS_SETTINGS = [
   {
     title: 'none',
@@ -159,67 +204,59 @@ const removeUploadScaleListeners = () => {
 }
 
 const onFiltersChange = () => {
-  for (let i = 0; i < uploadImgFilters.length; i++) {
-    if (uploadImgFilters[i].checked) {
-      let effect = uploadImgFilters[i].id.split('effect-')
-      filterName = effect[1];
-
-      uploadImgPreview.classList.remove(...uploadImgPreview.classList);
-      uploadImgPreview.classList.add(`effects__preview--${effect[1]}`);
-
-      if ((i !== 0) && (!uploadImgFilterSlider.firstChild)) {
-        window.noUiSlider.create(uploadImgFilterSlider, {
-          range: {
-            min: 0,
-            max: 100,
-          },
-          start: 100,
-          step: 1,
-          connect: 'lower',
-          format: {
-            to: function (value) {
-              if (Number.isInteger(value)) {
-                return value.toFixed(0);
-              }
-              return value.toFixed(1);
-            },
-            from: function (value) {
-              return parseFloat(value);
-            },
-          },
-        });
-
-        uploadImgFilterValue.value = 100;
-
-        uploadImgFilterSlider.noUiSlider.on('update', (_, handle, unencoded) => {
-          uploadImgFilterValue.value = unencoded[handle];
-          changeValueEffect(uploadImgFilterValue.value, filterName);
-        });
-      }
-
-      if ((i === 0) && (uploadImgFilterSlider.firstChild)) {
-        uploadImgFilterSlider.noUiSlider.destroy();
-        uploadImgPreview.style.filter = 'none';
-      }
-
-      for (let j = 0; j < FILTERS_SETTINGS.length; j++) {
-        if (FILTERS_SETTINGS[j].title === uploadImgFilters[i].value) {
-          const {range, start, step} = FILTERS_SETTINGS[j];
-
-          filterName = FILTERS_SETTINGS[j].title;
-
-          if (uploadImgFilterSlider.firstChild) {
-            uploadImgFilterSlider.noUiSlider.updateOptions({
-              range: range,
-              start: start,
-              step: step,
-            });
+  const currentFilter = uploadOverlay.querySelector('.effects__radio:checked');
+  filterName = currentFilter.value;
+  
+  console.log(filterName)
+  
+  uploadImgPreview.classList.remove(...uploadImgPreview.classList);
+  uploadImgPreview.classList.add(`effects__preview--${filterName}`);
+  
+  if ((filterName !== 'none') && (!uploadImgFilterSlider.firstChild)) {
+    window.noUiSlider.create(uploadImgFilterSlider, {
+      range: {
+        min: 0,
+        max: 100,
+      },
+      start: 100,
+      step: 1,
+      connect: 'lower',
+      format: {
+        to: function(value) {
+          if (Number.isInteger(value)) {
+            return value.toFixed(0);
           }
-        }
-      }
-      return
-    }
+          return value.toFixed(1);
+        },
+        from: function(value) {
+          return parseFloat(value);
+        },
+      },
+    });
+  
+    uploadImgFilterValue.value = 100;
+  
+    uploadImgFilterSlider.noUiSlider.on('update', (_, handle, unencoded) => {
+      uploadImgFilterValue.value = unencoded[handle];
+      changeValueEffect(uploadImgFilterValue.value, filterName);
+      console.log(uploadImgFilterValue.value)
+    });
   }
+  
+  if ((filterName === 'none') && (uploadImgFilterSlider.firstChild)) {
+    uploadImgFilterSlider.noUiSlider.destroy();
+    uploadImgPreview.style.filter = 'none';
+  }
+  
+  if (uploadImgFilterSlider.firstChild) {
+    const {range, start, step} = FILTER_SETTINGS[filterName];
+    uploadImgFilterSlider.noUiSlider.updateOptions({
+      range: range,
+      start: start,
+      step: step,
+    });
+  }
+  return
 }
 
 const changeValueEffect = (value, filter) => {
