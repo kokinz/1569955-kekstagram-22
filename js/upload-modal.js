@@ -1,5 +1,5 @@
 import {isEscEvent, isEnterEvent} from './util.js';
-import {UPLOAD_SCALE_SETTINGS} from './settings.js';
+import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS} from './settings.js';
 import '../nouislider/nouislider.js';
 
 const pageBody = document.body;
@@ -16,51 +16,6 @@ const uploadImgFilters = uploadOverlay.querySelectorAll('.effects__radio');
 const uploadImgFiltersList = uploadOverlay.querySelector('.effects__list');
 const uploadImgFilterValue = uploadOverlay.querySelector('.effect-level__value');
 const uploadImgFilterSlider = uploadOverlay.querySelector('.effect-level__slider');
-
-const FILTER_SETTINGS = {
-  none: 'none',
-  
-  chrome: {
-    range: {
-      min: 0,
-      max: 1,
-    },
-    start: 1,
-    step: 0.1,
-  },
-  sepia: {
-    range: {
-      min: 0,
-      max: 1,
-    },
-    start: 1,
-    step: 0.1,
-  },
-  marvin: {
-    range: {
-      min: 0,
-      max: 100,
-    },
-    start: 100,
-    step: 1,
-  },
-  phobos: {
-    range: {
-      min: 0,
-      max: 3,
-    },
-    start: 3,
-    step: 0.1,
-  },
-  heat: {
-    range: {
-      min: 1,
-      max: 3,
-    },
-    start: 3,
-    step: 0.1,
-  },
-};
 
 let filterName = '';
 
@@ -114,7 +69,6 @@ const closeUploadModal = (evt) => {
 
   removeUploadScaleListeners();
   removeUploadFiltersListener();
-  uploadImgPreview.style.filter = 'none';
 }
 
 const addUploadListeners = () => {

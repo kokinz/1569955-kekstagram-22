@@ -31,4 +31,48 @@ const UPLOAD_SCALE_SETTINGS = {
   step: 25,
 }
 
-export {PHOTOS_COUNT, MIN_LIKES, MAX_LIKES, MAX_AVATARS, MAX_COMMENTS, COMMENTS_ID_MAX, COMMENTS_ID, NAMES, MESSAGES, DESCRIPTIONS, UPLOAD_SCALE_SETTINGS};
+const FILTER_SETTINGS = {
+  none: 'none',
+  chrome: {
+    range: {
+      min: 0,
+      max: 1,
+    },
+    start: 1,
+    step: 0.1,
+  },
+  sepia: {
+    range: {
+      min: 0,
+      max: 1,
+    },
+    start: 1,
+    step: 0.1,
+  },
+  marvin: {
+    range: {
+      min: 0,
+      max: 100,
+    },
+    start: 100,
+    step: 1,
+  },
+  phobos: {
+    range: {
+      min: 0,
+      max: 3,
+    },
+    start: 3,
+    step: 0.1,
+  },
+  heat: {
+    range: {
+      min: 1,
+      max: 3,
+    },
+    start: 3,
+    step: 0.1,
+  },
+};
+
+export {PHOTOS_COUNT, MIN_LIKES, MAX_LIKES, MAX_AVATARS, MAX_COMMENTS, COMMENTS_ID_MAX, COMMENTS_ID, NAMES, MESSAGES, DESCRIPTIONS, UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS};
