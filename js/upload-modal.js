@@ -62,57 +62,6 @@ const FILTER_SETTINGS = {
   },
 };
 
-const FILTERS_SETTINGS = [
-  {
-    title: 'none',
-  },
-  {
-    title: 'chrome',
-    range: {
-      min: 0,
-      max: 1,
-    },
-    start: 1,
-    step: 0.1,
-  },
-  {
-    title: 'sepia',
-    range: {
-      min: 0,
-      max: 1,
-    },
-    start: 1,
-    step: 0.1,
-  },
-  {
-    title: 'marvin',
-    range: {
-      min: 0,
-      max: 100,
-    },
-    start: 100,
-    step: 1,
-  },
-  {
-    title: 'phobos',
-    range: {
-      min: 0,
-      max: 3,
-    },
-    start: 3,
-    step: 0.1,
-  },
-  {
-    title: 'heat',
-    range: {
-      min: 1,
-      max: 3,
-    },
-    start: 3,
-    step: 0.1,
-  },
-];
-
 let filterName = '';
 
 const onUploadOverlayEscKeydown = (evt) => {
@@ -207,8 +156,6 @@ const onFiltersChange = () => {
   const currentFilter = uploadOverlay.querySelector('.effects__radio:checked');
   filterName = currentFilter.value;
   
-  console.log(filterName)
-  
   uploadImgPreview.classList.remove(...uploadImgPreview.classList);
   uploadImgPreview.classList.add(`effects__preview--${filterName}`);
   
@@ -239,13 +186,11 @@ const onFiltersChange = () => {
     uploadImgFilterSlider.noUiSlider.on('update', (_, handle, unencoded) => {
       uploadImgFilterValue.value = unencoded[handle];
       changeValueEffect(uploadImgFilterValue.value, filterName);
-      console.log(uploadImgFilterValue.value)
     });
   }
   
   if ((filterName === 'none') && (uploadImgFilterSlider.firstChild)) {
-    uploadImgFilterSlider.noUiSlider.destroy();
-    uploadImgPreview.style.filter = 'none';
+    resetFilters();
   }
   
   if (uploadImgFilterSlider.firstChild) {
@@ -260,43 +205,45 @@ const onFiltersChange = () => {
 }
 
 const changeValueEffect = (value, filter) => {
-  if (filter === 'chrome') {
-    uploadImgPreview.style.filter = 'none';
-    uploadImgPreview.style.filter = `grayscale(${value})`;
-  }
-
-  if (filter === 'sepia') {
-    uploadImgPreview.style.filter = 'none';
-    uploadImgPreview.style.filter = `sepia(${value})`;
-  }
-
-  if (filter === 'marvin') {
-    uploadImgPreview.style.filter = 'none';
-    uploadImgPreview.style.filter = `invert(${value}%)`;
-  }
-
-  if (filter === 'phobos') {
-    uploadImgPreview.style.filter = 'none';
-    uploadImgPreview.style.filter = `blur(${value}px)`;
-  }
-
-  if (filter === 'heat') {
-    uploadImgPreview.style.filter = 'none';
-    uploadImgPreview.style.filter = `brightness(${value})`;
-  }
-
-  if (filter === 'none') {
-    uploadImgPreview.style.filter = 'none';
+  uploadImgPreview.style.filter = 'none';
+  
+  switch (filter) {
+    case 'chrome': 
+      uploadImgPreview.style.filter = `grayscale(${value})`;
+      break;
+    case 'sepia': 
+      uploadImgPreview.style.filter = `sepia(${value})`;
+      break;
+    case 'marvin':
+      uploadImgPreview.style.filter = `invert(${value}%)`;
+      break;
+    case 'phobos':
+      uploadImgPreview.style.filter = `blur(${value}px)`;
+      break;
+    case 'heat':
+      uploadImgPreview.style.filter = `brightness(${value})`;
+      break;
+    default:
+      uploadImgPreview.style.filter = 'none';
   }
 }
 
 const addUploadFiltersListener = () => {
   uploadImgFilters[0].checked = true;
+  
   uploadImgFiltersList.addEventListener('change', onFiltersChange);
 }
 
 const removeUploadFiltersListener = () => {
+  resetFilters();
+  
   uploadImgFiltersList.removeEventListener('change', onFiltersChange);
+}
+
+const resetFilters = () => {
+  uploadImgPreview.style.filter = 'none';
+  uploadImgFilterSlider.noUiSlider.destroy();
+  uploadImgPreview.classList.remove(...uploadImgPreview.classList);
 }
 
 export {addUploadListeners};
