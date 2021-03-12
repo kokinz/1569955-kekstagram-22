@@ -1,4 +1,5 @@
 import {isEscEvent, isEnterEvent} from './util.js';
+import {UPLOAD_SCALE_SETTINGS} from './settings.js';
 import '../nouislider/nouislider.js';
 
 const pageBody = document.body;
@@ -55,7 +56,8 @@ const FILTERS_SETTINGS = [
     },
     start: 3,
     step: 0.1,
-  },{
+  },
+  {
     title: 'heat',
     range: {
       min: 1,
@@ -133,14 +135,14 @@ const changeValue  = (step) => {
 }
 
 const onButtonScaleSmaller = () => {
-  if (uploadButtonScaleValue.value != '25%') {
-    changeValue(-25);
+  if (uploadButtonScaleValue.value != `${UPLOAD_SCALE_SETTINGS.min}%`) {
+    changeValue(-UPLOAD_SCALE_SETTINGS.step);
   }
 }
 
 const onButtonScaleBigger = () => {
-  if (uploadButtonScaleValue.value != '100%') {
-    changeValue(25);
+  if (uploadButtonScaleValue.value != `${UPLOAD_SCALE_SETTINGS.max}%`) {
+    changeValue(UPLOAD_SCALE_SETTINGS.step);
   }
 }
 
