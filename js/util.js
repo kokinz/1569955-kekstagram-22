@@ -44,4 +44,6 @@ const getRandomUniqueArrayNumber = (array = [], max = 10) => {
   return array[array.length - 1];
 }
 
+checkLengthOfString ('');
+
 export {getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};

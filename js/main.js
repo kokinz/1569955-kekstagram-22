@@ -1,9 +1,9 @@
-import {checkLengthOfString} from './util.js';
 import {renderPicures} from './pictures.js';
-import {bigPictureOpen, onPictureOpenClick, onPictureEnterKeydown} from './picture-modal.js';
+import {addPicturesListeners} from './picture-modal.js';
+import {addUploadListeners} from './upload-modal.js';
 
-checkLengthOfString ('');
 renderPicures();
+addPicturesListeners();
+addUploadListeners();
 
-bigPictureOpen.addEventListener('click', onPictureOpenClick);
-bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
+
