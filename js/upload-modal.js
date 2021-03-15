@@ -1,5 +1,6 @@
 import {isEscEvent, isEnterEvent} from './util.js';
 import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS} from './settings.js';
+import {addUploadTextListeners, removeUploadTextListeners} from './form-validation.js';
 import '../nouislider/nouislider.js';
 
 const pageBody = document.body;
@@ -49,6 +50,7 @@ const openUploadModal = (evt) => {
 
   addUploadScaleListeners();
   addUploadFiltersListener();
+  addUploadTextListeners();
 }
 
 const closeUploadModal = (evt) => {
@@ -69,6 +71,7 @@ const closeUploadModal = (evt) => {
 
   removeUploadScaleListeners();
   removeUploadFiltersListener();
+  removeUploadTextListeners();
 }
 
 const addUploadListeners = () => {
