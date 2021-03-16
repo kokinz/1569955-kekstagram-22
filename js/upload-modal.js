@@ -2,7 +2,6 @@ import {isEscEvent, isEnterEvent} from './util.js';
 import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS} from './settings.js';
 import {sendData} from './data.js';
 import {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput} from './form-validation.js';
-import {showSuccessMessage, showErrorMessage} from './message.js';
 import '../nouislider/nouislider.js';
 
 const pageBody = document.body;
@@ -54,7 +53,7 @@ const openUploadModal = (evt) => {
   addUploadScaleListeners();
   addUploadFiltersListener();
   addUploadTextListeners();
-  addUploadFormListener(showSuccessMessage, showErrorMessage);
+  addUploadFormListener();
 }
 
 const closeUploadModal = (evt) => {
@@ -77,7 +76,7 @@ const closeUploadModal = (evt) => {
   removeUploadScaleListeners();
   removeUploadFiltersListener();
   removeUploadTextListeners();
-  removeUploadFormListener(showSuccessMessage, showErrorMessage);
+  removeUploadFormListener();
 }
 
 const addUploadListeners = () => {
@@ -211,22 +210,20 @@ const resetFilters = () => {
   uploadImgPreview.classList.remove(...uploadImgPreview.classList);
 }
 
-const onFormSubmit = (onSuccess, onError) => {
-  return (evt) => {
-    evt.preventDefault();
-    const htmlForm = new FormData(evt.target);
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  const htmlForm = new FormData(evt.target);
 
-    sendData(htmlForm, onSuccess, onError);
-    closeUploadModal(evt);
-  }
+  sendData(htmlForm);
+  closeUploadModal(evt);
 }
 
-const addUploadFormListener = (onSuccess, onError) => {
-  uploadForm.addEventListener('submit', onFormSubmit(onSuccess, onError));
+const addUploadFormListener = () => {
+  uploadForm.addEventListener('submit', onFormSubmit);
 }
 
-const removeUploadFormListener = (onSuccess, onError) => {
-  uploadForm.removeEventListener('submit', onFormSubmit(onSuccess, onError));
+const removeUploadFormListener = () => {
+  uploadForm.removeEventListener('submit', onFormSubmit);
 }
 
 export {addUploadListeners};

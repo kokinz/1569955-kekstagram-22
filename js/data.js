@@ -1,5 +1,6 @@
 import {URL_GET_DATA, URL_SEND_DATA} from './settings.js';
 import {showAlert} from './util.js';
+import {showSuccessMessage, showErrorMessage} from './message.js';
 
 const getData = (onSuccess) => {
   fetch(URL_GET_DATA)
@@ -17,7 +18,7 @@ const getData = (onSuccess) => {
     });
 }
 
-const sendData = (htmlForm, onSuccess, onError) => {
+const sendData = (htmlForm) => {
   fetch(URL_SEND_DATA,{
     method: 'POST',
     body: htmlForm,
@@ -28,9 +29,9 @@ const sendData = (htmlForm, onSuccess, onError) => {
       }
       throw new Error(`${responce.status} ${responce.statusText}`);
     })
-    .then(() => onSuccess())
-    .catch((err) => {
-      onError(err);
+    .then(() => showSuccessMessage())
+    .catch(() => {
+      showErrorMessage();
     });
 }
 
