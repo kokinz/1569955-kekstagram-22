@@ -1,14 +1,14 @@
-import {createPhotoDescriptionArray} from './data.js';
-
-const pictures = createPhotoDescriptionArray();
+const pictures = [];
 let gallery = [];
 
-const renderPicures = () => {
+const renderPicures = (array) => {
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const picturesContainer = document.querySelector('.pictures');
 
   const picturesFragment = document.createDocumentFragment();
-
+  
+  array.forEach(element => pictures.push(element));
+  
   pictures.forEach((picture) => {
     const pictureElement = pictureTemplate.cloneNode(true);
 
