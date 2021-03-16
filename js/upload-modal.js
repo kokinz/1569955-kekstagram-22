@@ -1,5 +1,6 @@
 import {isEscEvent, isEnterEvent} from './util.js';
 import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS} from './settings.js';
+import {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput} from './form-validation.js';
 import '../nouislider/nouislider.js';
 
 const pageBody = document.body;
@@ -20,7 +21,7 @@ const uploadImgFilterSlider = uploadOverlay.querySelector('.effect-level__slider
 let filterName = '';
 
 const onUploadOverlayEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
+  if (isEscEvent(evt) && (!isFocusHashtagsInput() && !isFocusCommentInput())) {
     closeUploadModal(evt);
   }
 }
@@ -49,6 +50,7 @@ const openUploadModal = (evt) => {
 
   addUploadScaleListeners();
   addUploadFiltersListener();
+  addUploadTextListeners();
 }
 
 const closeUploadModal = (evt) => {
@@ -69,6 +71,7 @@ const closeUploadModal = (evt) => {
 
   removeUploadScaleListeners();
   removeUploadFiltersListener();
+  removeUploadTextListeners();
 }
 
 const addUploadListeners = () => {
@@ -109,10 +112,10 @@ const removeUploadScaleListeners = () => {
 const onFiltersChange = () => {
   const currentFilter = uploadOverlay.querySelector('.effects__radio:checked');
   filterName = currentFilter.value;
-  
+
   uploadImgPreview.classList.remove(...uploadImgPreview.classList);
   uploadImgPreview.classList.add(`effects__preview--${filterName}`);
-  
+
   if ((filterName !== 'none') && (!uploadImgFilterSlider.firstChild)) {
     window.noUiSlider.create(uploadImgFilterSlider, {
       range: {
@@ -134,19 +137,19 @@ const onFiltersChange = () => {
         },
       },
     });
-  
+
     uploadImgFilterValue.value = 100;
-  
+
     uploadImgFilterSlider.noUiSlider.on('update', (_, handle, unencoded) => {
       uploadImgFilterValue.value = unencoded[handle];
       changeValueEffect(uploadImgFilterValue.value, filterName);
     });
   }
-  
+
   if ((filterName === 'none') && (uploadImgFilterSlider.firstChild)) {
     resetFilters();
   }
-  
+
   if (uploadImgFilterSlider.firstChild) {
     const {range, start, step} = FILTER_SETTINGS[filterName];
     uploadImgFilterSlider.noUiSlider.updateOptions({
@@ -160,12 +163,12 @@ const onFiltersChange = () => {
 
 const changeValueEffect = (value, filter) => {
   uploadImgPreview.style.filter = 'none';
-  
+
   switch (filter) {
-    case 'chrome': 
+    case 'chrome':
       uploadImgPreview.style.filter = `grayscale(${value})`;
       break;
-    case 'sepia': 
+    case 'sepia':
       uploadImgPreview.style.filter = `sepia(${value})`;
       break;
     case 'marvin':
@@ -184,19 +187,21 @@ const changeValueEffect = (value, filter) => {
 
 const addUploadFiltersListener = () => {
   uploadImgFilters[0].checked = true;
-  
+
   uploadImgFiltersList.addEventListener('change', onFiltersChange);
 }
 
 const removeUploadFiltersListener = () => {
   resetFilters();
-  
+
   uploadImgFiltersList.removeEventListener('change', onFiltersChange);
 }
 
 const resetFilters = () => {
   uploadImgPreview.style.filter = 'none';
-  uploadImgFilterSlider.noUiSlider.destroy();
+  if (uploadImgFilterSlider.firstChild) {
+    uploadImgFilterSlider.noUiSlider.destroy();
+  }
   uploadImgPreview.classList.remove(...uploadImgPreview.classList);
 }
 
