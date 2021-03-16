@@ -1,4 +1,5 @@
 import {ALERT_SHOW_TIME} from './settings.js';
+
 const getRandomNumber = (min = 0, max = 100) => {
   if (min >= 0 && max >= 0) {
     return (max >= min)
@@ -56,9 +57,9 @@ const showAlert = (message) => {
   alertContainer.style.fontSize = '30px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
-  
+
   alertContainer.textContent = message;
-  
+
   document.body.append(alertContainer);
 
   setTimeout(() => {

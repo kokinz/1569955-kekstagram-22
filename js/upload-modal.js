@@ -1,10 +1,13 @@
 import {isEscEvent, isEnterEvent} from './util.js';
 import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS} from './settings.js';
+import {sendData} from './data.js';
 import {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput} from './form-validation.js';
+import {showSuccessMessage, showErrorMessage} from './message.js';
 import '../nouislider/nouislider.js';
 
 const pageBody = document.body;
 const uploadOverlay = document.querySelector('.img-upload__overlay');
+const uploadForm = document.querySelector('#upload-select-image');
 
 const uploadButton = document.querySelector('#upload-file');
 const uploadButtonClose = uploadOverlay.querySelector('#upload-cancel');
@@ -51,6 +54,7 @@ const openUploadModal = (evt) => {
   addUploadScaleListeners();
   addUploadFiltersListener();
   addUploadTextListeners();
+  addUploadFormListener(showSuccessMessage, showErrorMessage);
 }
 
 const closeUploadModal = (evt) => {
@@ -60,6 +64,7 @@ const closeUploadModal = (evt) => {
   pageBody.classList.remove('modal-open');
 
   uploadButton.value = '';
+  uploadImgFilterValue.value = 100;
 
   uploadButtonClose.removeEventListener('click' , closeUploadModal);
   uploadButtonClose.removeEventListener('keydown', onUploadButtonCloseEnterKeydown);
@@ -72,6 +77,7 @@ const closeUploadModal = (evt) => {
   removeUploadScaleListeners();
   removeUploadFiltersListener();
   removeUploadTextListeners();
+  removeUploadFormListener(showSuccessMessage, showErrorMessage);
 }
 
 const addUploadListeners = () => {
@@ -203,6 +209,24 @@ const resetFilters = () => {
     uploadImgFilterSlider.noUiSlider.destroy();
   }
   uploadImgPreview.classList.remove(...uploadImgPreview.classList);
+}
+
+const onFormSubmit = (onSuccess, onError) => {
+  return (evt) => {
+    evt.preventDefault();
+    const htmlForm = new FormData(evt.target);
+
+    sendData(htmlForm, onSuccess, onError);
+    closeUploadModal(evt);
+  }
+}
+
+const addUploadFormListener = (onSuccess, onError) => {
+  uploadForm.addEventListener('submit', onFormSubmit(onSuccess, onError));
+}
+
+const removeUploadFormListener = (onSuccess, onError) => {
+  uploadForm.removeEventListener('submit', onFormSubmit(onSuccess, onError));
 }
 
 export {addUploadListeners};
