@@ -1,5 +1,5 @@
-import {RANDOM_PICTURES_COUNT} from './settings.js';
-import {getRandomUniqueArrayNumber} from './util.js';
+import {RANDOM_PICTURES_COUNT, RENDER_PICTURES_DELAY} from './settings.js';
+import {getRandomUniqueArrayNumber, throttle} from './util.js';
 
 
 const picturesSortFiltersBlock = document.querySelector('.img-filters');
@@ -40,54 +40,50 @@ const renderPicures = (array) => {
   addSortFiltersListener();
 }
 
-const rerenderPictures = (array) => {
+const rerenderPictures = throttle((array) => {
   gallery.forEach(picture => picture.parentNode.removeChild(picture));
   removeSortFiltersListener();
   renderPicures(array);
-}
+}, RENDER_PICTURES_DELAY);
 
 const onSortFilterClick = (evt) => {
-  if (evt.target.classList.contains('img-filters__button--active')) {
-    return
-  } else {
-    const filters = picturesSortFiltersForm.querySelectorAll('.img-filters__button');
-    const picturesSortArray = [];
-    
-    filters.forEach((filter) => {
-      if (filter.classList.contains('img-filters__button--active')) {
-        filter.classList.remove('img-filters__button--active');
-      }
-    });
-    
-    evt.target.classList.add('img-filters__button--active');
-    
-    switch(evt.target.id) {
-      case 'filter-default' : 
-        rerenderPictures(picturesDefaultSort);
-        break;
-      case 'filter-random' : 
-        const randomIdArray = [];
-        
-        while(randomIdArray.length < RANDOM_PICTURES_COUNT) {
-          getRandomUniqueArrayNumber(randomIdArray, picturesDefaultSort.length);
-        }
-        randomIdArray.forEach(id => picturesSortArray.push(picturesDefaultSort[id - 1]));
-        
-        rerenderPictures(picturesSortArray);
-        break;
-      case 'filter-discussed' :
-        const sortPictures = (pictureA, pictureB) => {
-          return pictureB.comments.length - pictureA.comments.length;
-        }
-        
-        picturesDefaultSort
-          .slice()
-          .sort(sortPictures)
-          .forEach(picture => picturesSortArray.push(picture));
-          
-        rerenderPictures(picturesSortArray);
-        break;
+  const filters = picturesSortFiltersForm.querySelectorAll('.img-filters__button');
+  const picturesSortArray = [];
+  
+  filters.forEach((filter) => {
+    if (filter.classList.contains('img-filters__button--active')) {
+      filter.classList.remove('img-filters__button--active');
     }
+  });
+  
+  evt.target.classList.add('img-filters__button--active');
+  
+  switch (evt.target.id) {
+    case 'filter-default':
+      rerenderPictures(picturesDefaultSort);
+      break;
+    case 'filter-random':
+      const randomIdArray = [];
+  
+      while (randomIdArray.length < RANDOM_PICTURES_COUNT) {
+        getRandomUniqueArrayNumber(randomIdArray, picturesDefaultSort.length);
+      }
+      randomIdArray.forEach(id => picturesSortArray.push(picturesDefaultSort[id - 1]));
+  
+      rerenderPictures(picturesSortArray);
+      break;
+    case 'filter-discussed':
+      const sortPictures = (pictureA, pictureB) => {
+        return pictureB.comments.length - pictureA.comments.length;
+      }
+  
+      picturesDefaultSort
+        .slice()
+        .sort(sortPictures)
+        .forEach(picture => picturesSortArray.push(picture));
+  
+      rerenderPictures(picturesSortArray);
+      break;
   }
 }
 

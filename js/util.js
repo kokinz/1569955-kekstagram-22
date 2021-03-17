@@ -67,5 +67,17 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 }
 
+function throttle (callback, limit) {
+  let waiting = false;
+  return function () {
+    if (!waiting) {
+      callback.apply(this, arguments);
+      waiting = true;
+      setTimeout(() => {
+        waiting = false;
+      }, limit);
+    }
+  }
+}
 
-export {showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};
+export {throttle, showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};
