@@ -1,6 +1,12 @@
+import {RANDOM_PICTURES_COUNT} from './settings.js';
+import {getRandomUniqueArrayNumber} from './util.js';
+
+
 const picturesSortFiltersBlock = document.querySelector('.img-filters');
 const picturesSortFiltersForm = document.querySelector('.img-filters__form');
 const pictures = [];
+const picturesDefaultSort = [];
+
 let gallery = [];
 
 const renderPicures = (array) => {
@@ -8,7 +14,12 @@ const renderPicures = (array) => {
   const picturesContainer = document.querySelector('.pictures');
   const picturesFragment = document.createDocumentFragment();
   
+  pictures.length = 0;
   array.forEach(element => pictures.push(element));
+  
+  if (!picturesDefaultSort.length) {
+    pictures.forEach(element => picturesDefaultSort.push(element));
+  }
   
   pictures.forEach((picture) => {
     const pictureElement = pictureTemplate.cloneNode(true);
@@ -29,11 +40,18 @@ const renderPicures = (array) => {
   addSortFiltersListener();
 }
 
+const rerenderPictures = (array) => {
+  gallery.forEach(picture => picture.parentNode.removeChild(picture));
+  removeSortFiltersListener();
+  renderPicures(array);
+}
+
 const onSortFilterClick = (evt) => {
   if (evt.target.classList.contains('img-filters__button--active')) {
     return
   } else {
     const filters = picturesSortFiltersForm.querySelectorAll('.img-filters__button');
+    const picturesSortArray = [];
     
     filters.forEach((filter) => {
       if (filter.classList.contains('img-filters__button--active')) {
@@ -45,13 +63,29 @@ const onSortFilterClick = (evt) => {
     
     switch(evt.target.id) {
       case 'filter-default' : 
-        console.log('default');
+        rerenderPictures(picturesDefaultSort);
         break;
       case 'filter-random' : 
-        console.log('random');
+        const randomIdArray = [];
+        
+        while(randomIdArray.length < RANDOM_PICTURES_COUNT) {
+          getRandomUniqueArrayNumber(randomIdArray, picturesDefaultSort.length);
+        }
+        randomIdArray.forEach(id => picturesSortArray.push(picturesDefaultSort[id - 1]));
+        
+        rerenderPictures(picturesSortArray);
         break;
-      case 'filter-discussed' : 
-        console.log('discussed');
+      case 'filter-discussed' :
+        const sortPictures = (pictureA, pictureB) => {
+          return pictureB.comments.length - pictureA.comments.length;
+        }
+        
+        picturesDefaultSort
+          .slice()
+          .sort(sortPictures)
+          .forEach(picture => picturesSortArray.push(picture));
+          
+        rerenderPictures(picturesSortArray);
         break;
     }
   }
@@ -59,6 +93,10 @@ const onSortFilterClick = (evt) => {
 
 const addSortFiltersListener = () => {
   picturesSortFiltersForm.addEventListener('click', onSortFilterClick);
+}
+
+const removeSortFiltersListener = () => {
+  picturesSortFiltersForm.removeEventListener('click', onSortFilterClick);
 }
 
 export {pictures, gallery, renderPicures}
