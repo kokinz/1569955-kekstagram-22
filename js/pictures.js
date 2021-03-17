@@ -48,7 +48,12 @@ const rerenderPictures = throttle((array) => {
 
 const onSortFilterClick = (evt) => {
   const filters = picturesSortFiltersForm.querySelectorAll('.img-filters__button');
+  const sortPictures = (pictureA, pictureB) => {
+    return pictureB.comments.length - pictureA.comments.length;
+  }
+      
   const picturesSortArray = [];
+  const randomIdArray = [];
   
   filters.forEach((filter) => {
     if (filter.classList.contains('img-filters__button--active')) {
@@ -63,8 +68,6 @@ const onSortFilterClick = (evt) => {
       rerenderPictures(picturesDefaultSort);
       break;
     case 'filter-random':
-      const randomIdArray = [];
-  
       while (randomIdArray.length < RANDOM_PICTURES_COUNT) {
         getRandomUniqueArrayNumber(randomIdArray, picturesDefaultSort.length);
       }
@@ -73,10 +76,6 @@ const onSortFilterClick = (evt) => {
       rerenderPictures(picturesSortArray);
       break;
     case 'filter-discussed':
-      const sortPictures = (pictureA, pictureB) => {
-        return pictureB.comments.length - pictureA.comments.length;
-      }
-  
       picturesDefaultSort
         .slice()
         .sort(sortPictures)
