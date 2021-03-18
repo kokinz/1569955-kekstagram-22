@@ -1,5 +1,6 @@
 import {isEscEvent, isEnterEvent} from './util.js';
 import {gallery, pictures} from './pictures.js';
+import {COMMENTS_SHOWN_COUNT} from './settings.js';
 
 const pageBody = document.body;
 const bigPicture = document.querySelector('.big-picture');
@@ -10,6 +11,7 @@ const commentsLoader = bigPicture.querySelector('.comments-loader');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
 const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
+const bigPictureCommentsShown = bigPicture.querySelector('.comments-shown');
 const bigPictureCommentslist = bigPicture.querySelector('.social__comments');
 const bigPictureDescription = bigPicture.querySelector('.social__caption');
 
@@ -58,7 +60,6 @@ const closeBigPictureModal = (evt) => {
 
   bigPicture.classList.add('hidden');
 
-  commentsCount.classList.remove('hidden');
   commentsLoader.classList.remove('hidden');
 
   pageBody.classList.remove('modal-open');
@@ -75,8 +76,7 @@ const openBigPictureModal = (evt) => {
   evt.preventDefault();
 
   bigPicture.classList.remove('hidden');
-
-  commentsCount.classList.add('hidden');
+  
   commentsLoader.classList.add('hidden');
 
   pageBody.classList.add('modal-open');
@@ -101,29 +101,67 @@ const renderBigPicture = () => {
   bigPictureDescription.textContent = description;
 
   bigPictureCommentslist.innerHTML = '';
+  
+  console.log(
+  checkCommentsCount(comments.length));
+  
+  bigPictureCommentsShown.textContent = bigPictureCommentslist.children.length;
+}
+
+const checkCommentsCount = (commentsCount) => commentsCount <= COMMENTS_SHOWN_COUNT;
+
+
+const renderCommentsBlock = (commentsCount) => {
+  
   const commentFragment = document.createDocumentFragment();
+  
+  if (commentsCount <= COMMENTS_SHOWN_COUNT) {
+    for (let i = 0; i < commentsCount; i++) {
+      const commentListItem = document.createElement('li');
+      commentListItem.classList.add('social__comment');
 
-  for (let i = 0; i < pictures[pictureId].comments.length; i++) {
-    const commentListItem = document.createElement('li');
-    commentListItem.classList.add('social__comment');
+      const commentAvatar = document.createElement('img')
+      commentAvatar.classList.add('social__picture');
 
-    const commentAvatar = document.createElement('img')
-    commentAvatar.classList.add('social__picture');
+      const commentText = document.createElement('p')
+      commentText.classList.add('social__text');
 
-    const commentText = document.createElement('p')
-    commentText.classList.add('social__text');
+      const {avatar, name, message} = pictures[pictureId].comments[i];
 
-    const {avatar, name, message} = pictures[pictureId].comments[i];
+      commentAvatar.src = avatar;
+      commentAvatar.alt = name;
+      commentListItem.appendChild(commentAvatar);
 
-    commentAvatar.src = avatar;
-    commentAvatar.alt = name;
-    commentListItem.appendChild(commentAvatar);
+      commentText.textContent = message;
+      commentListItem.appendChild(commentText);
 
-    commentText.textContent = message;
-    commentListItem.appendChild(commentText);
+      commentFragment.appendChild(commentListItem);
+    }
+  } else {
+    for (let i = 0; i < COMMENTS_SHOWN_COUNT; i++) {
+      const commentListItem = document.createElement('li');
+      commentListItem.classList.add('social__comment');
 
-    commentFragment.appendChild(commentListItem);
+      const commentAvatar = document.createElement('img')
+      commentAvatar.classList.add('social__picture');
+
+      const commentText = document.createElement('p')
+      commentText.classList.add('social__text');
+
+      const {avatar, name, message} = pictures[pictureId].comments[i];
+
+      commentAvatar.src = avatar;
+      commentAvatar.alt = name;
+      commentListItem.appendChild(commentAvatar);
+
+      commentText.textContent = message;
+      commentListItem.appendChild(commentText);
+
+      commentFragment.appendChild(commentListItem);
+    }
   }
+
+  
 
   bigPictureCommentslist.appendChild(commentFragment);
 }
