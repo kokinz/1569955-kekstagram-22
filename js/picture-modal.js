@@ -117,12 +117,12 @@ const renderBigPicture = () => {
   
   bigPictureImg.src = url;
   bigPictureLikes.textContent = likes;
-  bigPictureCommentsCount.textContent = comments.length;
+  bigPictureCommentsCount.textContent = countRenderComments;
   bigPictureDescription.textContent = description;
 
   bigPictureCommentslist.innerHTML = '';
 
-  if (comments.length > COMMENTS_SHOWN_COUNT) {
+  if (countRenderComments > COMMENTS_SHOWN_COUNT) {
     countRenderComments = COMMENTS_SHOWN_COUNT;
 
     commentsButton.classList.remove('hidden');
