@@ -113,7 +113,7 @@ const openBigPictureModal = (evt) => {
 const renderBigPicture = () => {
   const {url, likes, comments, description} = pictures[pictureId];
 
-  let countRenderComments;
+  let countRenderComments = comments.length;
   
   bigPictureImg.src = url;
   bigPictureLikes.textContent = likes;
@@ -128,8 +128,6 @@ const renderBigPicture = () => {
     commentsButton.classList.remove('hidden');
 
     addCommentsButtonListener();
-  } else {
-    countRenderComments = comments.length;
   }
   
   renderComments(countRenderComments);
