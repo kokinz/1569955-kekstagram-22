@@ -64,7 +64,8 @@ const onCommentsButtonClick = (evt) => {
     renderComments(lastCommentId + 5);
   } else {
     renderComments(commentsCount);
-
+    
+    removeCommentsButtonListener();
     commentsButton.classList.add('hidden');
   }
 
@@ -83,6 +84,7 @@ const closeBigPictureModal = (evt) => {
   document.removeEventListener('keydown', onBigPictureEscKeydown);
   bigPictureClose.removeEventListener('keydown', onBigPictureEnterKeydown);
   bigPictureClose.removeEventListener('click', onBigPictureCloseClick);
+  removeCommentsButtonListener();
 
   bigPictureOpen.addEventListener('click', onPictureOpenClick);
   bigPictureOpen.addEventListener('keydown', onPictureEnterKeydown);
@@ -118,14 +120,10 @@ const renderBigPicture = () => {
 
   bigPictureCommentslist.innerHTML = '';
 
-  if (comments.length >= COMMENTS_SHOWN_COUNT) {
+  if (comments.length > COMMENTS_SHOWN_COUNT) {
     renderComments(COMMENTS_SHOWN_COUNT);
 
-    if (comments.length === COMMENTS_SHOWN_COUNT) {
-      commentsButton.classList.add('hidden');
-    } else {
-      commentsButton.classList.remove('hidden');
-    }
+    commentsButton.classList.remove('hidden');
 
     addCommentsButtonListener();
   } else {
@@ -172,6 +170,10 @@ const addPicturesListeners = () => {
 
 const addCommentsButtonListener = () => {
   commentsButton.addEventListener('click', onCommentsButtonClick);
+}
+
+const removeCommentsButtonListener = () => {
+  commentsButton.removeEventListener('click', onCommentsButtonClick);
 }
 
 export {addPicturesListeners};
