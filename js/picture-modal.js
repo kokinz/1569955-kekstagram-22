@@ -60,8 +60,8 @@ const onCommentsButtonClick = (evt) => {
   const lastCommentId = bigPictureCommentslist.children.length;
   const commentsCount = pictures[pictureId].comments.length;
 
-  if (lastCommentId + 5 < commentsCount) {
-    renderComments(lastCommentId + 5);
+  if (lastCommentId + COMMENTS_SHOWN_COUNT < commentsCount) {
+    renderComments(lastCommentId + COMMENTS_SHOWN_COUNT);
   } else {
     renderComments(commentsCount);
     
@@ -113,6 +113,8 @@ const openBigPictureModal = (evt) => {
 const renderBigPicture = () => {
   const {url, likes, comments, description} = pictures[pictureId];
 
+  let countRenderComments;
+  
   bigPictureImg.src = url;
   bigPictureLikes.textContent = likes;
   bigPictureCommentsCount.textContent = comments.length;
@@ -121,14 +123,16 @@ const renderBigPicture = () => {
   bigPictureCommentslist.innerHTML = '';
 
   if (comments.length > COMMENTS_SHOWN_COUNT) {
-    renderComments(COMMENTS_SHOWN_COUNT);
+    countRenderComments = COMMENTS_SHOWN_COUNT;
 
     commentsButton.classList.remove('hidden');
 
     addCommentsButtonListener();
   } else {
-    renderComments(comments.length);
+    countRenderComments = comments.length;
   }
+  
+  renderComments(countRenderComments);
 
   bigPictureCommentsShown.textContent = bigPictureCommentslist.children.length;
 }
