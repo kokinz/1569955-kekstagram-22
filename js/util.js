@@ -67,7 +67,7 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 }
 
-function throttle (callback, limit) {
+const throttle = (callback, limit) => {
   let waiting = false;
   return function () {
     if (!waiting) {

@@ -1,5 +1,5 @@
 import {isEscEvent, isEnterEvent} from './util.js';
-import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS} from './settings.js';
+import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS, FILE_TYPES} from './settings.js';
 import {sendData} from './data.js';
 import {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput} from './form-validation.js';
 import '../nouislider/nouislider.js';
@@ -15,6 +15,7 @@ const uploadButtonScaleSmaller = uploadOverlay.querySelector('.scale__control--s
 const uploadButtonScaleValue = uploadOverlay.querySelector('.scale__control--value');
 
 const uploadImgPreview = uploadOverlay.querySelector('.img-upload__preview img');
+const uploadEffectsPreview = document.querySelectorAll('.effects__preview');
 const uploadImgFilters = uploadOverlay.querySelectorAll('.effects__radio');
 const uploadImgFiltersList = uploadOverlay.querySelector('.effects__list');
 const uploadImgFilterValue = uploadOverlay.querySelector('.effect-level__value');
@@ -40,6 +41,8 @@ const onUploadButtonChange = (evt) => {
 
 const openUploadModal = (evt) => {
   evt.preventDefault();
+  
+  downloadImgPreview();
 
   uploadOverlay.classList.remove('hidden');
   pageBody.classList.add('modal-open');
@@ -79,8 +82,30 @@ const closeUploadModal = (evt) => {
   removeUploadFormListener();
 }
 
+const downloadImgPreview = () => {
+  const file = uploadButton.files[0];
+  const fileName = file.name.toLowerCase();
+    
+  const matches = FILE_TYPES.some((it) => {
+    return fileName.endsWith(it);
+  });
+  
+  if (matches) {
+    const reader = new FileReader();
+      
+    reader.addEventListener('load', () => {
+      uploadImgPreview.src = reader.result;
+      uploadEffectsPreview.forEach((effect) => {
+        effect.style.backgroundImage = `url(${reader.result})`;
+      })
+    });
+      
+    reader.readAsDataURL(file);
+  }
+}
+
 const addUploadListeners = () => {
-  uploadButton.addEventListener('input', onUploadButtonChange);
+  uploadButton.addEventListener('change', onUploadButtonChange);
 }
 
 const changeValue  = (step) => {
