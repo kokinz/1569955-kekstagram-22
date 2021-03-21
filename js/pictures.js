@@ -13,14 +13,14 @@ const renderPicures = (array) => {
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const picturesContainer = document.querySelector('.pictures');
   const picturesFragment = document.createDocumentFragment();
-  
+
   pictures.length = 0;
   array.forEach(element => pictures.push(element));
-  
+
   if (!picturesDefaultSort.length) {
     pictures.forEach(element => picturesDefaultSort.push(element));
   }
-  
+
   pictures.forEach((picture) => {
     const pictureElement = pictureTemplate.cloneNode(true);
 
@@ -34,9 +34,9 @@ const renderPicures = (array) => {
   picturesContainer.appendChild(picturesFragment);
 
   gallery = document.querySelectorAll('a.picture');
-  
+
   picturesSortFiltersBlock.classList.remove('img-filters--inactive');
-  
+
   addSortFiltersListener();
 }
 
@@ -51,18 +51,18 @@ const onSortFilterClick = (evt) => {
   const sortPictures = (pictureA, pictureB) => {
     return pictureB.comments.length - pictureA.comments.length;
   }
-      
+
   const picturesSortArray = [];
   const randomIdArray = [];
-  
+
   filters.forEach((filter) => {
     if (filter.classList.contains('img-filters__button--active')) {
       filter.classList.remove('img-filters__button--active');
     }
   });
-  
+
   evt.target.classList.add('img-filters__button--active');
-  
+
   switch (evt.target.id) {
     case 'filter-default':
       rerenderPictures(picturesDefaultSort);
@@ -72,7 +72,7 @@ const onSortFilterClick = (evt) => {
         getRandomUniqueArrayNumber(randomIdArray, picturesDefaultSort.length);
       }
       randomIdArray.forEach(id => picturesSortArray.push(picturesDefaultSort[id - 1]));
-  
+
       rerenderPictures(picturesSortArray);
       break;
     case 'filter-discussed':
@@ -80,7 +80,7 @@ const onSortFilterClick = (evt) => {
         .slice()
         .sort(sortPictures)
         .forEach(picture => picturesSortArray.push(picture));
-  
+
       rerenderPictures(picturesSortArray);
       break;
   }

@@ -69,9 +69,9 @@ const showAlert = (message) => {
 
 const throttle = (callback, limit) => {
   let waiting = false;
-  return function () {
+  return (...functionArguments) => {
     if (!waiting) {
-      callback.apply(this, arguments);
+      callback.apply(this, functionArguments);
       waiting = true;
       setTimeout(() => {
         waiting = false;
