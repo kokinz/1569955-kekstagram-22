@@ -1,11 +1,10 @@
-import {isEscEvent, isEnterEvent, isFocusElement} from './util.js';
+import {isEscEvent, isEnterEvent, isFocusElement, changeClassOnModalOpen, changeClassOnModalClose} from './util.js';
 import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS, FILE_TYPES} from './settings.js';
 import {sendData} from './data.js';
 import {addUploadTextListeners, removeUploadTextListeners} from './form-validation.js';
 import '../../build/nouislider/nouislider.js';
 import nouislider from '../../build/nouislider/nouislider.js';
 
-const pageBody = document.body;
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadForm = document.querySelector('#upload-select-image');
 
@@ -48,8 +47,7 @@ const openUploadModal = (evt) => {
 
   downloadImgPreview();
 
-  uploadOverlay.classList.remove('hidden');
-  pageBody.classList.add('modal-open');
+  changeClassOnModalOpen(uploadOverlay);
 
   uploadButtonClose.addEventListener('click' , closeUploadModal);
   uploadButtonClose.addEventListener('keydown', onUploadButtonCloseEnterKeydown);
@@ -66,8 +64,7 @@ const openUploadModal = (evt) => {
 const closeUploadModal = (evt) => {
   evt.preventDefault();
 
-  uploadOverlay.classList.add('hidden');
-  pageBody.classList.remove('modal-open');
+  changeClassOnModalClose(uploadOverlay);
 
   uploadButton.value = '';
   uploadImgFilterValue.value = 100;

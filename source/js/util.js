@@ -50,6 +50,20 @@ const getRandomUniqueArrayNumber = (array = [], max = 10) => {
   return array[array.length - 1];
 }
 
+const changeClassOnModalOpen = (element) => {
+  const pageBody = document.body;
+
+  element.classList.remove('hidden');
+  pageBody.classList.add('modal-open');
+}
+
+const changeClassOnModalClose = (element) => {
+  const pageBody = document.body;
+
+  element.classList.add('hidden');
+  pageBody.classList.remove('modal-open');
+}
+
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
@@ -83,4 +97,4 @@ const debounce = (callback, time) => {
   }
 }
 
-export {isFocusElement, debounce, showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};
+export {changeClassOnModalOpen, changeClassOnModalClose, isFocusElement, debounce, showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};

@@ -1,8 +1,7 @@
-import {isEscEvent, isEnterEvent} from './util.js';
+import {isEscEvent, isEnterEvent, changeClassOnModalOpen, changeClassOnModalClose} from './util.js';
 import {gallery, pictures} from './pictures.js';
 import {COMMENTS_SHOWN_COUNT} from './settings.js';
 
-const pageBody = document.body;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureOpen = document.querySelector('.pictures');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
@@ -64,7 +63,7 @@ const onCommentsButtonClick = (evt) => {
     renderComments(lastCommentId + COMMENTS_SHOWN_COUNT);
   } else {
     renderComments(commentsCount);
-    
+
     removeCommentsButtonListener();
     commentsButton.classList.add('hidden');
   }
@@ -75,11 +74,8 @@ const onCommentsButtonClick = (evt) => {
 const closeBigPictureModal = (evt) => {
   evt.preventDefault();
 
-  bigPicture.classList.add('hidden');
-
   commentsButton.classList.remove('hidden');
-
-  pageBody.classList.remove('modal-open');
+  changeClassOnModalClose(bigPicture);
 
   document.removeEventListener('keydown', onBigPictureEscKeydown);
   bigPictureClose.removeEventListener('keydown', onBigPictureEnterKeydown);
@@ -93,11 +89,8 @@ const closeBigPictureModal = (evt) => {
 const openBigPictureModal = (evt) => {
   evt.preventDefault();
 
-  bigPicture.classList.remove('hidden');
-
   commentsButton.classList.add('hidden');
-
-  pageBody.classList.add('modal-open');
+  changeClassOnModalOpen(bigPicture);
 
   document.addEventListener('keydown', onBigPictureEscKeydown);
   bigPictureClose.addEventListener('keydown', onBigPictureEnterKeydown);
@@ -114,7 +107,7 @@ const renderBigPicture = () => {
   const {url, likes, comments, description} = pictures[pictureId];
 
   let countRenderComments = comments.length;
-  
+
   bigPictureImg.src = url;
   bigPictureLikes.textContent = likes;
   bigPictureCommentsCount.textContent = countRenderComments;
@@ -129,7 +122,7 @@ const renderBigPicture = () => {
 
     addCommentsButtonListener();
   }
-  
+
   renderComments(countRenderComments);
 
   bigPictureCommentsShown.textContent = bigPictureCommentslist.children.length;
