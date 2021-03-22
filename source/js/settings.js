@@ -7,7 +7,7 @@ const URL_GET_DATA = 'https://22.javascript.pages.academy/kekstagram/data';
 const URL_SEND_DATA = 'https://22.javascript.pages.academy/kekstagram';
 const ALERT_SHOW_TIME = 5000;
 const RANDOM_PICTURES_COUNT = 10;
-const RENDER_PICTURES_DELAY = 500;
+const RENDER_PICTURES_DELAY = 5000;
 
 const UPLOAD_SCALE_SETTINGS = {
   min: 25,

@@ -76,6 +76,7 @@ const closeUploadModal = (evt) => {
   uploadButton.addEventListener('input', onUploadButtonChange);
 
   uploadImgPreview.classList.remove(...uploadImgPreview.classList);
+  uploadImgPreview.src = '';
 
   removeUploadScaleListeners();
   removeUploadFiltersListener();

@@ -76,6 +76,10 @@ const throttle = (callback, limit) => {
       setTimeout(() => {
         waiting = false;
       }, limit);
+    } else {
+      setTimeout(() => {
+        callback.apply(this, functionArguments);
+      }, limit);
     }
   }
 }
