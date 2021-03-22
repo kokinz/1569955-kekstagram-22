@@ -4,14 +4,6 @@ import {HASHTAGS_SEPARATOR, HASHTAGS_COUNT, HASHTAG_MAX_LENGTH, COMMENT_MAX_LENG
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 
-const isFocusHashtagsInput = () => {
-  return hashtagsInput === document.activeElement;
-}
-
-const isFocusCommentInput = () => {
-  return commentInput === document.activeElement;
-}
-
 const trimHashtagsSpaces = (array) => {
   return array.filter((word) => {
     return word.length > 0;
@@ -39,29 +31,34 @@ const checkUniqHashtags = (array) => {
   return uniqHashtags.size === array.length;
 }
 
+const setCustomValidityErrorMessage = (element, message) => {
+  element.setCustomValidity(message);
+  element.style = 'border: 1px solid red';
+}
+
+const resetCustomValidityMessage = (element) => {
+  element.setCustomValidity('');
+  element.removeAttribute('style');
+}
+
 const onHashtagInput = (evt) => {
   const hashtags = evt.target.value.split(HASHTAGS_SEPARATOR);
   const hashtagsArray = trimHashtagsSpaces(hashtags);
 
   if (hashtagsInput.value) {
     if (!checkHashtagsCorrect(hashtagsArray)) {
-      hashtagsInput.setCustomValidity(`Хэш-тег начинается с # (решетки), состоит из букв и чисел, и не длиннее ${HASHTAG_MAX_LENGTH} символов`);
-      hashtagsInput.style = 'border: 1px solid red';
+      setCustomValidityErrorMessage(hashtagsInput, `Хэш-тег начинается с # (решетки), состоит из букв и чисел, и не длиннее ${HASHTAG_MAX_LENGTH} символов`);
     } else
     if (!checkUniqHashtags(hashtagsArray)) {
-      hashtagsInput.setCustomValidity('Хэш-теги не могут повторятся');
-      hashtagsInput.style = 'border: 1px solid red';
+      setCustomValidityErrorMessage(hashtagsInput, 'Хэш-теги не могут повторятся');
     } else
     if (!checkHashtagsCount(hashtagsArray)) {
-      hashtagsInput.setCustomValidity(`Максимальное количество хэш-тегов  ${HASHTAGS_COUNT}`);
-      hashtagsInput.style = 'border: 1px solid red';
+      setCustomValidityErrorMessage(hashtagsInput, `Максимальное количество хэш-тегов  ${HASHTAGS_COUNT}`);
     } else {
-      hashtagsInput.setCustomValidity('');
-      hashtagsInput.removeAttribute('style');
+      resetCustomValidityMessage(hashtagsInput);
     }
   } else {
-    hashtagsInput.setCustomValidity('');
-    hashtagsInput.removeAttribute('style');
+    resetCustomValidityMessage(hashtagsInput);
   }
 
   hashtagsInput.reportValidity();
@@ -69,11 +66,9 @@ const onHashtagInput = (evt) => {
 
 const onCommentInput = () => {
   if (!checkLengthOfString(commentInput.value, COMMENT_MAX_LENGTH)) {
-    commentInput.setCustomValidity(`Комментарий не может быть длиннее ${COMMENT_MAX_LENGTH} символов`);
-    commentInput.style = 'border: 1px solid red';
+    setCustomValidityErrorMessage(commentInput, `Комментарий не может быть длиннее ${COMMENT_MAX_LENGTH} символов`);
   } else {
-    commentInput.setCustomValidity('');
-    commentInput.removeAttribute('style');
+    resetCustomValidityMessage(commentInput);
   }
 
   commentInput.reportValidity();
@@ -89,4 +84,4 @@ const removeUploadTextListeners = () => {
   commentInput.removeEventListener('input', onCommentInput);
 }
 
-export {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput};
+export {addUploadTextListeners, removeUploadTextListeners};

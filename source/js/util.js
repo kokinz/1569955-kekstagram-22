@@ -18,6 +18,10 @@ const isEnterEvent = (evt) => {
   return evt.key === 'Enter';
 };
 
+const isFocusElement = (element) => {
+  return element === document.activeElement;
+}
+
 const checkLengthOfString = (string, maxLength = 140) => {
   if (string === undefined) {
     throw new Error('Требуемый параметр строка (string)');
@@ -44,6 +48,20 @@ const getRandomUniqueArrayNumber = (array = [], max = 10) => {
   array.push(arrayId);
 
   return array[array.length - 1];
+}
+
+const changeClassOnModalOpen = (element) => {
+  const pageBody = document.body;
+
+  element.classList.remove('hidden');
+  pageBody.classList.add('modal-open');
+}
+
+const changeClassOnModalClose = (element) => {
+  const pageBody = document.body;
+
+  element.classList.add('hidden');
+  pageBody.classList.remove('modal-open');
 }
 
 const showAlert = (message) => {
@@ -79,4 +97,4 @@ const debounce = (callback, time) => {
   }
 }
 
-export {debounce, showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};
+export {changeClassOnModalOpen, changeClassOnModalClose, isFocusElement, debounce, showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};
