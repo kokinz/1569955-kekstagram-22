@@ -1,7 +1,7 @@
-import {isEscEvent, isEnterEvent} from './util.js';
+import {isEscEvent, isEnterEvent, isFocusElement} from './util.js';
 import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS, FILE_TYPES} from './settings.js';
 import {sendData} from './data.js';
-import {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput} from './form-validation.js';
+import {addUploadTextListeners, removeUploadTextListeners} from './form-validation.js';
 import '../../build/nouislider/nouislider.js';
 import nouislider from '../../build/nouislider/nouislider.js';
 
@@ -22,10 +22,13 @@ const uploadImgFiltersList = uploadOverlay.querySelector('.effects__list');
 const uploadImgFilterValue = uploadOverlay.querySelector('.effect-level__value');
 const uploadImgFilterSlider = uploadOverlay.querySelector('.effect-level__slider');
 
+const hashtagsInput = document.querySelector('.text__hashtags');
+const commentInput = document.querySelector('.text__description');
+
 let filterName = '';
 
 const onUploadOverlayEscKeydown = (evt) => {
-  if (isEscEvent(evt) && (!isFocusHashtagsInput() && !isFocusCommentInput())) {
+  if (isEscEvent(evt) && (!isFocusElement(hashtagsInput) && !isFocusElement(commentInput))) {
     closeUploadModal(evt);
   }
 }

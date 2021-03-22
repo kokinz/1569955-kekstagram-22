@@ -18,6 +18,10 @@ const isEnterEvent = (evt) => {
   return evt.key === 'Enter';
 };
 
+const isFocusElement = (element) => {
+  return element === document.activeElement;
+}
+
 const checkLengthOfString = (string, maxLength = 140) => {
   if (string === undefined) {
     throw new Error('Требуемый параметр строка (string)');
@@ -79,4 +83,4 @@ const debounce = (callback, time) => {
   }
 }
 
-export {debounce, showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};
+export {isFocusElement, debounce, showAlert, getRandomNumber, isEscEvent, isEnterEvent, checkLengthOfString, getRandomArrayElement, getRandomUniqueArrayNumber};

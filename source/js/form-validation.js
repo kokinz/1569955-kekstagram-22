@@ -4,14 +4,6 @@ import {HASHTAGS_SEPARATOR, HASHTAGS_COUNT, HASHTAG_MAX_LENGTH, COMMENT_MAX_LENG
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 
-const isFocusHashtagsInput = () => {
-  return hashtagsInput === document.activeElement;
-}
-
-const isFocusCommentInput = () => {
-  return commentInput === document.activeElement;
-}
-
 const trimHashtagsSpaces = (array) => {
   return array.filter((word) => {
     return word.length > 0;
@@ -89,4 +81,4 @@ const removeUploadTextListeners = () => {
   commentInput.removeEventListener('input', onCommentInput);
 }
 
-export {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput};
+export {addUploadTextListeners, removeUploadTextListeners};
