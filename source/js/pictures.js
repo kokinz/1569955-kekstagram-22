@@ -1,5 +1,5 @@
 import {RANDOM_PICTURES_COUNT, RENDER_PICTURES_DELAY} from './settings.js';
-import {getRandomUniqueArrayNumber, throttle} from './util.js';
+import {getRandomUniqueArrayNumber, debounce} from './util.js';
 
 
 const picturesSortFiltersBlock = document.querySelector('.img-filters');
@@ -40,7 +40,7 @@ const renderPicures = (array) => {
   addSortFiltersListener();
 }
 
-const rerenderPictures = throttle((array) => {
+const rerenderPictures = debounce((array) => {
   gallery.forEach(picture => picture.parentNode.removeChild(picture));
   removeSortFiltersListener();
   renderPicures(array);
