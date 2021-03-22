@@ -2,7 +2,8 @@ import {isEscEvent, isEnterEvent} from './util.js';
 import {UPLOAD_SCALE_SETTINGS, FILTER_SETTINGS, FILE_TYPES} from './settings.js';
 import {sendData} from './data.js';
 import {addUploadTextListeners, removeUploadTextListeners, isFocusHashtagsInput, isFocusCommentInput} from './form-validation.js';
-import '../nouislider/nouislider.js';
+import '../../build/nouislider/nouislider.js';
+import nouislider from '../../build/nouislider/nouislider.js';
 
 const pageBody = document.body;
 const uploadOverlay = document.querySelector('.img-upload__overlay');
@@ -41,7 +42,7 @@ const onUploadButtonChange = (evt) => {
 
 const openUploadModal = (evt) => {
   evt.preventDefault();
-  
+
   downloadImgPreview();
 
   uploadOverlay.classList.remove('hidden');
@@ -75,6 +76,7 @@ const closeUploadModal = (evt) => {
   uploadButton.addEventListener('input', onUploadButtonChange);
 
   uploadImgPreview.classList.remove(...uploadImgPreview.classList);
+  uploadImgPreview.src = '';
 
   removeUploadScaleListeners();
   removeUploadFiltersListener();
@@ -85,21 +87,21 @@ const closeUploadModal = (evt) => {
 const downloadImgPreview = () => {
   const file = uploadButton.files[0];
   const fileName = file.name.toLowerCase();
-    
+
   const matches = FILE_TYPES.some((it) => {
     return fileName.endsWith(it);
   });
-  
+
   if (matches) {
     const reader = new FileReader();
-      
+
     reader.addEventListener('load', () => {
       uploadImgPreview.src = reader.result;
       uploadEffectsPreview.forEach((effect) => {
         effect.style.backgroundImage = `url(${reader.result})`;
       })
     });
-      
+
     reader.readAsDataURL(file);
   }
 }
@@ -147,7 +149,7 @@ const onFiltersChange = () => {
   uploadImgPreview.classList.add(`effects__preview--${filterName}`);
 
   if ((filterName !== 'none') && (!uploadImgFilterSlider.firstChild)) {
-    window.noUiSlider.create(uploadImgFilterSlider, {
+    nouislider.create(uploadImgFilterSlider, {
       range: {
         min: 0,
         max: 100,
