@@ -118,13 +118,13 @@ const changeValue  = (step) => {
 }
 
 const onButtonScaleSmaller = () => {
-  if (uploadButtonScaleValue.value != `${UPLOAD_SCALE_SETTINGS.min}%`) {
+  if (uploadButtonScaleValue.value !== `${UPLOAD_SCALE_SETTINGS.min}%`) {
     changeValue(-UPLOAD_SCALE_SETTINGS.step);
   }
 }
 
 const onButtonScaleBigger = () => {
-  if (uploadButtonScaleValue.value != `${UPLOAD_SCALE_SETTINGS.max}%`) {
+  if (uploadButtonScaleValue.value !== `${UPLOAD_SCALE_SETTINGS.max}%`) {
     changeValue(UPLOAD_SCALE_SETTINGS.step);
   }
 }
